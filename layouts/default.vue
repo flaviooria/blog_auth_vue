@@ -1,13 +1,9 @@
 <template>
-  <div>
+  <main class="flex place-content-center h-screen">
     <slot />
-  </div>
+  </main>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup></script>
 
-</script>
-
-<style>
-
-</style>
+<style></style>

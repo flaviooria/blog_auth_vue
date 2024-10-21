@@ -1,3 +1,24 @@
+:root {
+  --primary-color: hsl(216, 18%, 16%);
+  --secondary-color: hsl(219, 13%, 22%);
+  --secondary-color-hover: hsl(219, 13%, 42%);
+  --component-color: hsl(183, 26%, 57%);
+  --component-color-hover: hsl(183, 26%, 67%);
+  --text-color: hsl(0, 0%, 93%);
+
+  --p-button-primary-background: var(--component-color);
+  --p-button-primary-hover-background: var(--component-color-hover);
+  --p-button-primary-border-color: var(--secondary-color);
+  --p-button-primary-hover-border-color: var(--secondary-color-hover);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+  }  
+}
+
 @layer tailwind-base, primevue, tailwind-utilities;
 
 @layer tailwind-base {

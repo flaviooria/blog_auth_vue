@@ -1,6 +1,6 @@
 <template>
   <section class="flex items-center justify-center w-full h-full">
-    <FormSignInOrUp type="signin" />
+    <FormSignInOrUp type="signup" />
   </section>
 </template>
 

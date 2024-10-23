@@ -4,6 +4,10 @@
   </section>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+definePageMeta({
+  middleware: ["already-auth"],
+});
+</script>
 
 <style></style>

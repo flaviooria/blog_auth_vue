@@ -41,9 +41,17 @@
       props.type == "signin" ? "Iniciar Sesion" : "Registrarse"
     }}</Button>
   </form>
+  <pre>{{ user }}</pre>
 </template>
 
 <script lang="ts" setup>
+import { useAuth } from "~/composables/auth";
+import type {
+  SignInInterface,
+  SignUpInterface,
+  UserResponse,
+} from "~/interfaces/auth";
+
 type TypeForm = "signin" | "signup";
 
 interface Props {
@@ -58,13 +66,61 @@ const props = withDefaults(defineProps<Props>(), {
 const username = ref("");
 const email = ref("");
 const password = ref("");
+const user = ref<UserResponse>();
 
-const getDataForm = () => {
-  console.log({
+const { login, register } = useAuth();
+const userStore = useUserStore();
+const { setUser } = userStore;
+
+const getDataForm = async () => {
+  const userData: SignInInterface | SignUpInterface = {
     email: email.value,
     password: password.value,
-    username: username.value,
-  });
+    name: username.value,
+  };
+
+  if (props.type == "signin") {
+    try {
+      const { data, error } = await login<UserResponse>("auth/signin", {
+        email: userData.email,
+        password: userData.password,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      user.value = data;
+
+      // Añadir al store global el usuario logeado
+      setUser(user.value);
+
+      await navigateTo("/welcome");
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    try {
+      const { data, error } = await register<UserResponse>("auth/signup", {
+        email: userData.email,
+        password: userData.password,
+        name: userData.name,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      user.value = data;
+
+      // Añadir al store global el usuario logeado
+      setUser(user.value);
+
+      await navigateTo("/welcome");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 </script>
 

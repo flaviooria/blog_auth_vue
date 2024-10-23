@@ -4,7 +4,22 @@ import { AuraPreset } from "./themes/aura.theme";
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "@primevue/nuxt-module"],
+  modules: ["@nuxtjs/tailwindcss", "@primevue/nuxt-module", "@pinia/nuxt"],
+
+  runtimeConfig: {
+    public: {
+      API_URL: process.env.API_URL,
+    },
+  },
+
+  components: [
+    {
+      path: "~/components",
+      extensions: ["vue"],
+      global: true,
+      pathPrefix: false,
+    },
+  ],
 
   primevue: {
     usePrimeVue: true,

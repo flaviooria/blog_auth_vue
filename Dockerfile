@@ -1,44 +1,38 @@
+# --- build stage ---
 ARG NODE_VERSION=20.14.0
-
-# Create build stage
 FROM node:${NODE_VERSION}-slim AS build
 
-# Enable pnpm
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+# Habilita pnpm vía corepack (sin npm -g)
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml files to the working directory
-COPY ./package.json /app/
-COPY ./pnpm-lock.yaml /app/
+# Copiamos solo manifest/lock para cachear dependencias
+COPY package.json pnpm-lock.yaml ./
 
-## Install dependencies
-RUN npm install -g pnpm && pnpm install
+# Instala dependencias de forma reproducible
+RUN pnpm install --frozen-lockfile
 
-# Copy the rest of the application files to the working directory
-COPY . ./
+# Ahora sí, copia el resto del código
+COPY . .
 
-# Build the application
+# Build (Nuxt/Nitro suele generar .output)
 RUN pnpm run build
 
-# Create a new stage for the production image
+# --- runtime stage ---
 FROM node:${NODE_VERSION}-slim
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the output from the build stage to the working directory
+# Copia el artefacto de build (Nitro)
 COPY --from=build /app/.output ./
 
-# Define environment variables
-ENV HOST=0.0.0.0 NODE_ENV=production
-ENV NODE_ENV=production
+# Variables para Nitro/Node en prod
+ENV NODE_ENV=production \
+    HOST=0.0.0.0 \
+    PORT=3000
 
-# Expose the port the application will run on
 EXPOSE 3000
 
-# Start the application
-CMD ["node","/app/server/index.mjs"]
+# Arranque Nitro
+CMD ["node", "./server/index.mjs"]

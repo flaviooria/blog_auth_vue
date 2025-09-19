@@ -16,7 +16,7 @@ COPY ./package.json /app/
 COPY ./pnpm-lock.yaml /app/
 
 ## Install dependencies
-RUN pnpm install --shamefully-hoist
+RUN npm install -g pnpm && pnpm install
 
 # Copy the rest of the application files to the working directory
 COPY . ./

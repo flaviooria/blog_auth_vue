@@ -1,5 +1,5 @@
 <template>
-  <header class="flex flex-row justify-between items-center p-3 bg-secondary">
+  <header class="flex flex-row justify-between items-center p-3 bg-secondary rounded-md">
     <h2 class="text-2xl font-semibold">Lista de compras</h2>
     <Button label="Cerrar Sesion" @click.once="logout" />
   </header>

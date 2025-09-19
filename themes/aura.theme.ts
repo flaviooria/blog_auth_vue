@@ -33,5 +33,14 @@ export const AuraPreset = definePreset(Aura, {
         focusColor: "var(--text-color)",
       },
     },
+    textarea: {
+      dark: {
+        background: "var(--component-color)",
+        color: "var(--text-color)",
+        focus: {
+          borderColor: "var(--secondary-color)",
+        },
+      },
+    },
   },
 });

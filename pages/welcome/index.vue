@@ -1,5 +1,5 @@
 <template>
-  <div v-if="user" class="flex flex-col justify-center items-center my-3">
+  <div v-if="user">
     <pre>{{ user }}</pre>
   </div>
 </template>
@@ -9,7 +9,7 @@ import type { UserResponse } from "~/interfaces/auth";
 
 definePageMeta({
   middleware: ["auth"],
-  layout: "header",
+  layout: "dashboard",
 });
 
 const user = ref<UserResponse | null>();
